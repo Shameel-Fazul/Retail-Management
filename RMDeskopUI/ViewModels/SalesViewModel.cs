@@ -1,5 +1,6 @@
 ﻿using Caliburn.Micro;
 using RMDesktopUI.Library.Api;
+using RMDesktopUI.Library.Helpers;
 using RMDesktopUI.Library.Models;
 using System;
 using System.Collections.Generic;
@@ -13,9 +14,11 @@ namespace RMDeskopUI.ViewModels
     public class SalesViewModel : Screen
     {
         IProductEndpoint _productEndpoint;
-        public SalesViewModel(IProductEndpoint productEndpoint)
+        IConfigHelper _configHelper;
+        public SalesViewModel(IProductEndpoint productEndpoint, IConfigHelper configHelper)
         {
             _productEndpoint = productEndpoint;
+            _configHelper = configHelper;
         }
 
         protected override async void OnViewLoaded(object view)
@@ -99,7 +102,18 @@ namespace RMDeskopUI.ViewModels
         {
             get
             {
-                return "$0.00";
+                decimal taxAmount = 0;
+                decimal taxRate = _configHelper.GetTaxRate();
+
+                foreach (var item in Cart)
+                {
+                    if (item.Product.IsTaxable)
+                    {
+                        taxAmount += (item.Product.RetailPrice * item.QuantityInCart * taxRate) / 100; 
+                    }
+                }
+
+                return taxAmount.ToString("C");
             }
         }
 
@@ -150,12 +164,14 @@ namespace RMDeskopUI.ViewModels
             SelectedProduct.QuantityInStock -= ItemQuantity;
             ItemQuantity = 1;
             NotifyOfPropertyChange(() => SubTotal);
+            NotifyOfPropertyChange(() => Tax);
             NotifyOfPropertyChange(() => Cart);
         }
 
         public void RemoveFromCart()
         {
             NotifyOfPropertyChange(() => SubTotal);
+            NotifyOfPropertyChange(() => Tax);
         }
 
         public bool CanRemoveFromCart
