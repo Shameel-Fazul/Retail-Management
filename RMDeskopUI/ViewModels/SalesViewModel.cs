@@ -14,10 +14,13 @@ namespace RMDeskopUI.ViewModels
     public class SalesViewModel : Screen
     {
         IProductEndpoint _productEndpoint;
+        ISaleEndpoint _saleEndpoint;
         IConfigHelper _configHelper;
-        public SalesViewModel(IProductEndpoint productEndpoint, IConfigHelper configHelper)
+
+        public SalesViewModel(IProductEndpoint productEndpoint, IConfigHelper configHelper, ISaleEndpoint saleEndpoint)
         {
             _productEndpoint = productEndpoint;
+            _saleEndpoint = saleEndpoint;
             _configHelper = configHelper;
         }
 
@@ -96,11 +99,6 @@ namespace RMDeskopUI.ViewModels
             decimal subTotal = 0;
             subTotal = Cart.Sum(x => x.Product.RetailPrice * x.QuantityInCart);
 
-            //foreach (var item in Cart)
-            //{
-            //    subTotal += item.Product.RetailPrice * item.QuantityInCart;
-            //}
-
             return subTotal;
         }
 
@@ -172,7 +170,8 @@ namespace RMDeskopUI.ViewModels
             NotifyOfPropertyChange(() => SubTotal);
             NotifyOfPropertyChange(() => Tax);
             NotifyOfPropertyChange(() => Total);
-            //NotifyOfPropertyChange(() => Cart);
+            NotifyOfPropertyChange(() => CanCheckout);
+            
         }
 
         public void RemoveFromCart()
@@ -180,6 +179,7 @@ namespace RMDeskopUI.ViewModels
             NotifyOfPropertyChange(() => SubTotal);
             NotifyOfPropertyChange(() => Tax);
             NotifyOfPropertyChange(() => Total);
+            NotifyOfPropertyChange(() => CanCheckout);
         }
 
         public bool CanRemoveFromCart
@@ -192,19 +192,36 @@ namespace RMDeskopUI.ViewModels
             }
         }
 
-        public void Checkout()
-        {
-
-        }
-
         public bool CanCheckout
         {
             get
             {
                 bool output = false;
 
+                if (Cart.Count > 0)
+                {
+                    output = true;
+                }
+
                 return output;
             }
+        }
+
+        public async Task Checkout()
+        {
+            SaleModel sale = new SaleModel();
+
+            foreach (var item in Cart)
+            {
+                sale.SaleDetails.Add(new SaleDetailModel
+                {
+                    ProductId = item.Product.Id,
+                    Quantity = item.QuantityInCart
+                });
+
+                await _saleEndpoint.PostSale(sale);
+            }
+
         }
 
 
