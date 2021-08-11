@@ -10,27 +10,22 @@ namespace RMDeskopUI.ViewModels
 {
     public class ShellViewModel : Conductor<object>, IHandle<LogOnEvent>
     {
-        private LoginViewModel _loginVM;
         private IEventAggregator _events;
         private SalesViewModel _salesVM;
-        private SimpleContainer _container;
 
-        public ShellViewModel(LoginViewModel loginVM, IEventAggregator events, SalesViewModel salesVM, SimpleContainer container)
+        public ShellViewModel(IEventAggregator events, SalesViewModel salesVM)
         {
             _events = events;
-            _loginVM = loginVM;
             _salesVM = salesVM;
-            _container = container;
 
             _events.Subscribe(this);
             
-            ActivateItem(_loginVM);
+            ActivateItem(IoC.Get<LoginViewModel>());
         }
 
         public void Handle(LogOnEvent message)
         {
             ActivateItem(_salesVM);
-            _loginVM = _container.GetInstance<LoginViewModel>(); // overwrite current loginvm instance with new instance to wipe all existing data
         }
     }
 }
