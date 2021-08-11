@@ -87,33 +87,43 @@ namespace RMDeskopUI.ViewModels
         {
             get
             {
-                decimal subTotal = 0;
-
-                foreach (var item in Cart)
-                {
-                    subTotal += item.Product.RetailPrice * item.QuantityInCart;
-                }
-
-                return subTotal.ToString("C");
+                return CalculateSubTotal().ToString("C");
             }
+        }
+
+        private decimal CalculateSubTotal()
+        {
+            decimal subTotal = 0;
+
+            foreach (var item in Cart)
+            {
+                subTotal += item.Product.RetailPrice * item.QuantityInCart;
+            }
+
+            return subTotal;
+        }
+
+        private decimal CalculateTax()
+        {
+            decimal taxAmount = 0;
+            decimal taxRate = _configHelper.GetTaxRate();
+
+            foreach (var item in Cart)
+            {
+                if (item.Product.IsTaxable)
+                {
+                    taxAmount += (item.Product.RetailPrice * item.QuantityInCart * taxRate) / 100;
+                }
+            }
+
+            return taxAmount;
         }
 
         public string Tax
         {
             get
             {
-                decimal taxAmount = 0;
-                decimal taxRate = _configHelper.GetTaxRate();
-
-                foreach (var item in Cart)
-                {
-                    if (item.Product.IsTaxable)
-                    {
-                        taxAmount += (item.Product.RetailPrice * item.QuantityInCart * taxRate) / 100; 
-                    }
-                }
-
-                return taxAmount.ToString("C");
+                return CalculateTax().ToString("C");
             }
         }
 
@@ -121,7 +131,8 @@ namespace RMDeskopUI.ViewModels
         {
             get
             {
-                return "$0.00";
+                decimal total = CalculateSubTotal() + CalculateTax();
+                return total.ToString("C");
             }
         }
 
@@ -165,13 +176,15 @@ namespace RMDeskopUI.ViewModels
             ItemQuantity = 1;
             NotifyOfPropertyChange(() => SubTotal);
             NotifyOfPropertyChange(() => Tax);
-            NotifyOfPropertyChange(() => Cart);
+            NotifyOfPropertyChange(() => Total);
+            //NotifyOfPropertyChange(() => Cart);
         }
 
         public void RemoveFromCart()
         {
             NotifyOfPropertyChange(() => SubTotal);
             NotifyOfPropertyChange(() => Tax);
+            NotifyOfPropertyChange(() => Total);
         }
 
         public bool CanRemoveFromCart
