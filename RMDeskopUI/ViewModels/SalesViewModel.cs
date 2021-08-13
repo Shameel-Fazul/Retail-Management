@@ -207,7 +207,7 @@ namespace RMDeskopUI.ViewModels
             }
         }
 
-        public async Task Checkout()
+        public void Checkout()
         {
             SaleModel sale = new SaleModel();
 
@@ -219,7 +219,7 @@ namespace RMDeskopUI.ViewModels
                     Quantity = item.QuantityInCart
                 });
 
-                await _saleEndpoint.PostSale(sale);
+                _saleEndpoint.PostSale(sale);
             }
 
         }
