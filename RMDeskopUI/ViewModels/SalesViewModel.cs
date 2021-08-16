@@ -66,6 +66,19 @@ namespace RMDeskopUI.ViewModels
             }
         }
 
+        private CartItemDisplayModel _selectedCartItem;
+
+        public CartItemDisplayModel SelectedCartItem
+        {
+            get { return _selectedCartItem; }
+            set
+            {
+                _selectedCartItem = value;
+                NotifyOfPropertyChange(() => SelectedCartItem);
+                NotifyOfPropertyChange(() => CanRemoveFromCart);
+            }
+        }
+
         private BindingList<CartItemDisplayModel> _cart = new BindingList<CartItemDisplayModel>();
 
         public BindingList<CartItemDisplayModel> Cart
@@ -177,23 +190,39 @@ namespace RMDeskopUI.ViewModels
             
         }
 
+        public bool CanRemoveFromCart
+        {
+            get
+            {
+                bool output = false;
+
+                if (SelectedCartItem != null && SelectedCartItem.Product.QuantityInStock > 0) // SelectedCartItem.Product.QuantityInStock > 0 - won't happen but just in case; natural nums
+                {
+                    output = true;
+                }
+
+                return output;
+            }
+        }
+
         public void RemoveFromCart()
         {
+            SelectedCartItem.Product.QuantityInStock += 1;
+
+            if (SelectedCartItem.QuantityInCart > 1)
+            {
+                SelectedCartItem.QuantityInCart -= 1; // points to memory address so we can increment the stocks
+            } else
+            {
+                Cart.Remove(SelectedCartItem);
+            }
+
             NotifyOfPropertyChange(() => SubTotal);
             NotifyOfPropertyChange(() => Tax);
             NotifyOfPropertyChange(() => Total);
             NotifyOfPropertyChange(() => CanCheckout);
         }
 
-        public bool CanRemoveFromCart
-        {
-            get 
-            {
-                bool output = false;
-
-                return output;
-            }
-        }
 
         public bool CanCheckout
         {
