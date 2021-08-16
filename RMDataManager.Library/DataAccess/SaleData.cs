@@ -62,9 +62,6 @@ namespace RMDataManager.Library.DataAccess
                 item.SaleId = sale.Id;
                 sql.SaveData("dbo.spSaleDetail_Insert", item, "RMData");
             }
-
-            Console.WriteLine(details);
-            Console.WriteLine(sale);
         }
     }
 }
