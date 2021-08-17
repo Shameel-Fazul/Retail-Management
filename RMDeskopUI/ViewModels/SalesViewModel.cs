@@ -196,7 +196,7 @@ namespace RMDeskopUI.ViewModels
             {
                 bool output = false;
 
-                if (SelectedCartItem != null && SelectedCartItem.Product.QuantityInStock > 0) // SelectedCartItem.Product.QuantityInStock > 0 - won't happen but just in case; natural nums
+                if (SelectedCartItem != null && SelectedCartItem.QuantityInCart > 0)
                 {
                     output = true;
                 }
@@ -221,6 +221,7 @@ namespace RMDeskopUI.ViewModels
             NotifyOfPropertyChange(() => Tax);
             NotifyOfPropertyChange(() => Total);
             NotifyOfPropertyChange(() => CanCheckout);
+            NotifyOfPropertyChange(() => CanAddToCart);
         }
 
 
