@@ -66,6 +66,17 @@ namespace RMDeskopUI.ViewModels
             }
         }
 
+        private async Task ResetSalesViewModel()
+        {
+            Cart = new BindingList<CartItemDisplayModel>();
+            await LoadProducts();
+
+            NotifyOfPropertyChange(() => SubTotal);
+            NotifyOfPropertyChange(() => Tax);
+            NotifyOfPropertyChange(() => Total);
+            NotifyOfPropertyChange(() => CanCheckout);
+        }
+
         private CartItemDisplayModel _selectedCartItem;
 
         public CartItemDisplayModel SelectedCartItem
@@ -240,7 +251,7 @@ namespace RMDeskopUI.ViewModels
             }
         }
 
-        public void Checkout()
+        public async Task Checkout()
         {
             SaleModel sale = new SaleModel();
 
@@ -253,6 +264,7 @@ namespace RMDeskopUI.ViewModels
                 });
 
                 _saleEndpoint.PostSale(sale);
+                await ResetSalesViewModel();
             }
 
         }
