@@ -12,5 +12,5 @@ begin
 	insert into dbo.Sale(CashierId, SaleDate, SubTotal, Tax, Total) values (@CashierId, @SaleDate, @SubTotal, @Tax, @Total);
 	
     --Gets the created record and returns the Id property back
-	select @Id = @@IDENTITY
+	select @Id = Scope_Identity();
 end
