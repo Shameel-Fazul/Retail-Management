@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>aspnet-TRMApi-4E7C3057-67E4-4839-885E-1FA2F6126D86</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.13" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.13" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.13" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.13" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.13" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TRMDataManager.Library\TRMDataManager.Library.csproj" />
+  </ItemGroup>
+
+</Project>
