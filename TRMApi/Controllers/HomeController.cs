@@ -43,12 +43,12 @@ namespace TRMApi.Controllers
             //}
 
             //var user = await _userManager.FindByEmailAsync("shameel.fazul@mail.com");
-                
+
             //if (user != null)
             //{
             //    await _userManager.AddToRolesAsync(user, new string[] { "Admin", "Cashier" });
             //}
-            
+
             return View();
         }
 
