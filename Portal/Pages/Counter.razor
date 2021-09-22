@@ -1,5 +1,16 @@
 ﻿@page "/counter"
 
+<AuthorizeView Roles="Manager">
+    <Authorized>
+        <p>The user (@context.User.FindFirst(ClaimTypes.Name).Value) is authorized</p>
+    </Authorized>
+
+    <NotAuthorized>
+        <p>The user is not authorized</p>
+    </NotAuthorized>
+</AuthorizeView>
+
+
 <h1>Counter</h1>
 
 <p>Current count: @currentCount</p>

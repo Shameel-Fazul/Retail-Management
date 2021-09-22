@@ -11,7 +11,7 @@
     </div>
 }
 
-<EditForm Model="model" OnInvalidSubmit="ExecuteLogin" class="card card-body bg-light mt-5">
+<EditForm Model="model" OnValidSubmit="ExecuteLogin" class="card card-body bg-light mt-5">
     <DataAnnotationsValidator />
     <ValidationSummary />
 
@@ -49,7 +49,7 @@
     {
         showAuthenticationError = false;
 
-        var result = AuthService.Login(model);
+        var result = await AuthService.Login(model);
 
         if (result is not null)
         {
