@@ -4,6 +4,9 @@
 		<UserSecretsId>4b41327b-e8a3-43a5-880b-03cfcf3e948b</UserSecretsId>
 	</PropertyGroup>
 	<ItemGroup>
+	  <None Include="..\.editorconfig" Link=".editorconfig" />
+	</ItemGroup>
+	<ItemGroup>
 	  <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
 	  <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="5.0.0" />
 	  <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />

@@ -17,10 +17,10 @@ namespace TRMDesktopUI.ViewModels
 {
     public class SalesViewModel : Screen
     {
-        IProductEndpoint _productEndpoint;
+        private readonly IProductEndpoint _productEndpoint;
         private readonly IConfiguration _config;
-        ISaleEndpoint _saleEndpoint;
-        IMapper _mapper;
+        private readonly ISaleEndpoint _saleEndpoint;
+        private readonly IMapper _mapper;
         private readonly StatusInfoViewModel _status;
         private readonly IWindowManager _window;
 
