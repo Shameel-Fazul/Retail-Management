@@ -1,4 +1,5 @@
 ﻿@page "/verifyauth"
+@inject IProductEndpoint productEndpoint
 
 <h3>VerifyAuth</h3>
 
@@ -41,5 +42,17 @@ else
             isManager = authState.User.IsInRole("Manager");
         }
 
+        try
+        {
+            var products = await productEndpoint.GetAll();
+            foreach (var product in products)
+            {
+                Console.WriteLine(product.Description);
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
     }
 }
