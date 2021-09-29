@@ -43,7 +43,7 @@ namespace TRMDesktopUI.ViewModels
                 _selectedUser = value;
                 SelectedUserName = value.Email;
                 UserRoles = new BindingList<string>(value.Roles.Select(x => x.Value).ToList());
-                LoadRoles().Wait(); // causes a deadlock
+                LoadRoles();
                 NotifyOfPropertyChange(() => SelectedUser);
             }
         }
